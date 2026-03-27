@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎓 Learnesta
+## 🎓 Learnesta
 
 ### A Modern Online Learning Platform Built with the MERN Stack
 
@@ -29,7 +29,6 @@
 - [How It Works](#️-how-it-works)
 - [Features](#-features)
 - [Tech Stack](#️-tech-stack)
-- [Project Structure](#-project-structure)
 - [API Reference](#-api-reference)
 - [Installation](#-installation)
 - [Running with Docker](#-running-with-docker)
@@ -147,74 +146,7 @@ Unlike passive video-based learning, Learnesta promotes **active learning** thro
 | **MongoDB Compass** | Database GUI |
 | **Git & GitHub** | Version control |
 
----
 
-## 📁 Project Structure
-
-```
-Learnesta/
-├── 🐳 docker-compose.yml
-├── 📄 README.md
-│
-├── server/                          ← Express Backend
-│   ├── index.js                     ← Server entry point
-│   ├── .env                         ← Environment variables
-│   ├── Dockerfile                   ← Backend Docker config
-│   │
-│   ├── models/
-│   │   ├── userModel.js             ← User schema
-│   │   ├── courseModel.js           ← Course schema
-│   │   ├── taskModel.js             ← Task schema
-│   │   └── materialModel.js         ← Study material schema
-│   │
-│   ├── Route/
-│   │   ├── userroute.js             ← Student API routes
-│   │   └── adminroute.js            ← Admin API routes
-│   │
-│   └── middleware/
-│       ├── auth.js                  ← JWT verification
-│       └── admin.js                 ← Admin role check
-│
-└── UI/                              ← React Frontend
-    ├── vite.config.js               ← Vite + proxy config
-    ├── Dockerfile                   ← Frontend Docker config
-    │
-    └── src/
-        ├── main.jsx
-        ├── Router.jsx               ← All routes defined here
-        │
-        ├── context/
-        │   └── AuthContext.jsx      ← Global auth state
-        │
-        ├── routes/
-        │   └── Protected.jsx        ← Role-based route guard
-        │
-        ├── layouts/
-        │   ├── MainLayout.jsx
-        │   └── Authlayout.jsx
-        │
-        ├── Components/
-        │   ├── Certificate.jsx      ← Certificate design
-        │   └── Navbar.jsx
-        │
-        └── Pages/
-            ├── Home.jsx
-            ├── Login.jsx
-            ├── Signup.jsx
-            ├── CoursePage.jsx
-            ├── CourseDetail.jsx
-            ├── UserDashboard.jsx
-            ├── AddCourse.jsx
-            ├── CourseManagementAdmin.jsx
-            ├── AddActivity.jsx
-            ├── UploadMaterial.jsx
-            ├── AdminCertification.jsx
-            ├── CertificationPage.jsx
-            ├── PaymentPage.jsx
-            └── ContactPage.jsx
-```
-
----
 
 
 ## 🚀 Installation
@@ -365,7 +297,6 @@ docker-compose up --build --force-recreate
 
 ---
 
-## 👨‍💻 Author
 
 <div align="center">
 
