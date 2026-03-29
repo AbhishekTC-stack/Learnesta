@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -19,16 +20,22 @@ const CourseDetail = () => {
     navigate("/login");
   };
 
+  const handleMaterialComplete = () => {
+    toast.success("Completed analysing the syllabus!");
+  };
+
+  const handleTaskSubmit = () => {
+    toast.success("Task submitted successfully!");
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 🔥 ENROLL USER FIRST
         await fetch(`/api/enroll/${courseId}`, {
           method: "POST",
           credentials: "include",
         });
 
-        // 📚 MATERIALS
         const matRes = await fetch(`/api/materials/${courseId}`, {
           credentials: "include",
         });
@@ -40,7 +47,6 @@ const CourseDetail = () => {
           setMaterials([]);
         }
 
-        // ✅ TASKS
         const taskRes = await fetch(`/api/tasks/${courseId}`, {
           credentials: "include",
         });
@@ -52,7 +58,6 @@ const CourseDetail = () => {
           setTasks([]);
         }
 
-        // 📘 COURSE NAME
         const courseRes = await fetch(`/api/getAllCourses`, {
           credentials: "include",
         });
@@ -74,7 +79,6 @@ const CourseDetail = () => {
   return (
     <div className="flex min-h-screen font-sans bg-gray-50">
 
-      {/* Sidebar */}
       <div className="w-64 bg-gradient-to-b from-purple-900 to-purple-600 text-white flex flex-col justify-between p-8">
         <div>
           <div className="text-xl font-bold mb-12">LEARNESTA</div>
@@ -87,7 +91,6 @@ const CourseDetail = () => {
         <p onClick={handleLogout} className="cursor-pointer">LOGOUT</p>
       </div>
 
-      {/* Main */}
       <div className="flex-1 p-10">
 
         <button
@@ -105,7 +108,6 @@ const CourseDetail = () => {
           Study materials and tasks
         </p>
 
-        {/* Tabs */}
         <div className="flex gap-4 mb-6">
           <button
             onClick={() => setActiveTab("materials")}
@@ -134,7 +136,6 @@ const CourseDetail = () => {
           <p>Loading...</p>
         ) : (
           <>
-            {/* MATERIALS */}
             {activeTab === "materials" && (
               <div className="space-y-4">
                 {materials.length === 0 ? (
@@ -155,7 +156,16 @@ const CourseDetail = () => {
                       </div>
 
                       {openMaterial === mat._id && (
-                        <p className="mt-2 text-gray-600">{mat.Content}</p>
+                        <>
+                          <p className="mt-2 text-gray-600">{mat.Content}</p>
+
+                          <button
+                            onClick={handleMaterialComplete}
+                            className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm"
+                          >
+                            Mark as Completed
+                          </button>
+                        </>
                       )}
                     </div>
                   ))
@@ -163,7 +173,6 @@ const CourseDetail = () => {
               </div>
             )}
 
-            {/* TASKS */}
             {activeTab === "tasks" && (
               <div className="space-y-4">
                 {tasks.length === 0 ? (
@@ -176,6 +185,13 @@ const CourseDetail = () => {
                       <p className="text-red-500 text-sm">
                         {new Date(task.DueDate).toLocaleDateString()}
                       </p>
+
+                      <button
+                        onClick={handleTaskSubmit}
+                        className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+                      >
+                        Submit Task
+                      </button>
                     </div>
                   ))
                 )}

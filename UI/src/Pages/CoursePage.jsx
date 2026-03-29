@@ -2,6 +2,34 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+// 🎯 Course Image Mapping
+const getCourseImage = (title) => {
+  const name = title.toLowerCase();
+
+  if (name.includes("react"))
+    return "https://images.unsplash.com/photo-1633356122544-f134324a6cee";
+
+  if (name.includes("javascript"))
+    return "https://images.unsplash.com/photo-1627398242454-45a1465c2479";
+
+  if (name.includes("python"))
+    return "https://images.unsplash.com/photo-1526378722484-bd91ca387e72";
+
+  if (name.includes("data"))
+    return "https://images.unsplash.com/photo-1551288049-bebda4e38f71";
+
+  if (name.includes("ui") || name.includes("ux"))
+    return "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e";
+
+  if (name.includes("java"))
+    return "https://images.unsplash.com/photo-1518770660439-4636190af475";
+
+  if (name.includes("php"))
+    return "https://images.unsplash.com/photo-1581093588401-22f42f7f4c0c";
+
+  return "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"; // default
+};
+
 function CourseCard({ course, onEnroll, enrolledIds }) {
   const [showDesc, setShowDesc] = useState(false);
   const { profile } = useAuth();
@@ -20,16 +48,24 @@ function CourseCard({ course, onEnroll, enrolledIds }) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-5 border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
 
-      {/* Course Image */}
-      <div className="h-40 bg-gradient-to-br from-purple-200 to-purple-400 rounded-lg mb-4"></div>
+      {/* ✅ Course Image */}
+      <img
+        src={getCourseImage(course.CourseTitle)}
+        alt="course"
+        className="h-40 w-full object-cover rounded-lg mb-4"
+      />
 
-      <h3 className="font-semibold text-lg text-gray-800">{course.CourseTitle}</h3>
+      <h3 className="font-semibold text-lg text-gray-800">
+        {course.CourseTitle}
+      </h3>
+
       <p className="text-sm text-gray-500 mt-1">{course.CourseType}</p>
-      <p className="text-purple-700 font-semibold text-sm mt-1">Rs. {course.Price}</p>
+      <p className="text-purple-700 font-semibold text-sm mt-1">
+        Rs. {course.Price}
+      </p>
 
       <div className="flex gap-2 mt-4 flex-wrap">
 
-        {/* View Details Button */}
         <button
           onClick={() => setShowDesc(!showDesc)}
           className="bg-purple-700 hover:bg-purple-800 transition text-white px-4 py-2 rounded-full text-sm font-medium"
@@ -37,7 +73,6 @@ function CourseCard({ course, onEnroll, enrolledIds }) {
           {showDesc ? "Hide Details" : "View Details"}
         </button>
 
-        {/* Enroll Button */}
         {isEnrolled ? (
           <button
             disabled
@@ -61,7 +96,6 @@ function CourseCard({ course, onEnroll, enrolledIds }) {
           {course.Description}
         </p>
       )}
-
     </div>
   );
 }
@@ -74,7 +108,6 @@ function CoursePage() {
   const { profile, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Fetch all courses
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -90,9 +123,9 @@ function CoursePage() {
     fetchCourses();
   }, []);
 
-  // Fetch enrolled courses if logged in
   useEffect(() => {
     if (!profile) return;
+
     const fetchEnrolled = async () => {
       try {
         const res = await fetch("/api/class", { credentials: "include" });
@@ -103,10 +136,10 @@ function CoursePage() {
         console.error(err);
       }
     };
+
     fetchEnrolled();
   }, [profile]);
 
-  // Enroll handler
   const handleEnroll = async (courseId) => {
     try {
       const res = await fetch(`/api/enroll/${courseId}`, {
@@ -119,12 +152,12 @@ function CoursePage() {
       if (res.ok) {
         setEnrolledIds([...enrolledIds, courseId]);
         setMessage("Successfully enrolled! Check your dashboard.");
-        setTimeout(() => setMessage(""), 3000);
       } else {
         setMessage(data.msg || "Enrollment failed");
-        setTimeout(() => setMessage(""), 3000);
       }
-    } catch (err) {
+
+      setTimeout(() => setMessage(""), 3000);
+    } catch {
       setMessage("Something went wrong");
       setTimeout(() => setMessage(""), 3000);
     }
@@ -133,46 +166,38 @@ function CoursePage() {
   return (
     <div className="flex min-h-screen font-sans bg-gray-50">
 
-      {/* Sidebar */}
       <div className="w-64 bg-gradient-to-b from-purple-900 to-purple-600 text-white flex flex-col justify-between px-8 py-10 shadow-xl">
         <div>
-          <div className="text-xl font-bold tracking-widest mb-12">LEARNESTA</div>
+          <div className="text-xl font-bold tracking-widest mb-12">
+            LEARNESTA
+          </div>
 
           <nav className="flex flex-col gap-6 text-sm">
-            <p
-              onClick={() => navigate("/dashboard")}
-              className="cursor-pointer hover:text-purple-200 transition"
-            >
+            <p onClick={() => navigate("/dashboard")} className="cursor-pointer">
               Dashboard
             </p>
             <p className="font-bold text-purple-200 border-l-4 border-purple-300 pl-3">
               Browse Courses
             </p>
-            <p
-              onClick={() => navigate("/certification")}
-              className="cursor-pointer hover:text-purple-200 transition"
-            >
+            <p onClick={() => navigate("/certification")} className="cursor-pointer">
               Certificates
             </p>
           </nav>
         </div>
 
         {profile && (
-          <p
-            onClick={async () => { await logout(); navigate("/login"); }}
-            className="cursor-pointer hover:text-gray-200 text-sm"
-          >
+          <p onClick={async () => { await logout(); navigate("/login"); }}>
             LOGOUT
           </p>
         )}
       </div>
 
-      {/* Main Section */}
       <div className="flex-1 p-16">
 
-        <h1 className="text-4xl font-bold mb-4 text-gray-800">Available Courses</h1>
+        <h1 className="text-4xl font-bold mb-4 text-gray-800">
+          Available Courses
+        </h1>
 
-        {/* Success/Error Message */}
         {message && (
           <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-5 py-3 rounded-xl text-sm">
             {message}
@@ -197,7 +222,6 @@ function CoursePage() {
         )}
 
       </div>
-
     </div>
   );
 }

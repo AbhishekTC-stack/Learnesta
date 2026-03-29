@@ -93,6 +93,12 @@ const AddActivity = () => {
             <p onClick={() => navigate("/upload-material")} className="cursor-pointer hover:text-purple-200 transition">
               STUDY MATERIALS
             </p>
+               <p
+              onClick={() => navigate("/users")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              USER MANAGEMENT
+            </p>
             <p onClick={() => navigate("/admin-certification")} className="cursor-pointer hover:text-purple-200 transition">
               CERTIFICATION
             </p>

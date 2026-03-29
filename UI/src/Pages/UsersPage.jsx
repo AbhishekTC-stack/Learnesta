@@ -45,11 +45,44 @@ const UsersPage = () => {
       {/* Sidebar */}
       <div className="w-64 bg-purple-800 text-white p-6">
         <h2 className="text-xl mb-10">ADMIN</h2>
-
-        <p onClick={() => navigate("/course-management")} className="cursor-pointer mb-4">
-          Courses
-        </p>
-        <p className="font-bold mb-4">Users</p>
+           <nav className="flex flex-col gap-6 text-lg">
+            <p
+              onClick={() => navigate("/add-course")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              ADD/UPDATE COURSE
+            </p>
+            <p
+              onClick={() => navigate("/course-management")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              COURSE MANAGEMENT
+            </p>
+            <p
+              onClick={() => navigate("/add-activity")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              ACTIVITY ADDING
+            </p>
+            <p
+              onClick={() => navigate("/upload-material")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              STUDY MATERIALS
+            </p>
+               <p
+              onClick={() => navigate("/users")}
+              className="cursor-pointer hover:text-purple-200 transition  font-bold text-purple-200"
+            >
+              USER MANAGEMENT
+            </p>
+            <p
+              onClick={() => navigate("/admin-certification")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              CERTIFICATION
+            </p>
+          </nav>
       </div>
 
       {/* Main */}

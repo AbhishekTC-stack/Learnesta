@@ -21,7 +21,6 @@ import UploadMaterial from "./Pages/UploadMaterial.jsx";
 import CourseDetail from "./Pages/CourseDetail.jsx";
 import AdminCertification from "./Pages/AdminCertification.jsx";
 
-// ✅ NEW IMPORT
 import UsersPage from "./Pages/UsersPage.jsx";
 
 import Protected from "./routes/Protected.jsx";

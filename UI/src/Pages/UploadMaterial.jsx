@@ -84,6 +84,12 @@ const UploadMaterial = () => {
             <p className="cursor-pointer font-bold text-purple-200 border-l-4 border-purple-300 pl-3">
               STUDY MATERIALS
             </p>
+               <p
+              onClick={() => navigate("/users")}
+              className="cursor-pointer hover:text-purple-200 transition"
+            >
+              USER MANAGEMENT
+            </p>
             <p onClick={() => navigate("/admin-certification")} className="cursor-pointer hover:text-purple-200 transition">
               CERTIFICATION
             </p>

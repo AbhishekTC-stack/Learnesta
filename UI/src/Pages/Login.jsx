@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+
 function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function Login() {
   };
 
   return (
+
+  
     <div className="min-h-screen flex font-sans bg-white">
       <div className="w-2/3 flex justify-center items-center">
         <div className="bg-white rounded-3xl shadow-2xl px-16 py-14 w-[480px]">
