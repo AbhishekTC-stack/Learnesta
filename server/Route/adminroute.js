@@ -6,14 +6,12 @@ import Material from "../models/materialModel.js";
 
 const admin = Router();
 
-// ─── ADD COURSE ───────────────────────────────────────────────
-// Frontend sends: CourseName, CourseId, CourseType, Description, Price
 admin.post("/addCourse", async (req, res) => {
   try {
     const { CourseName, CourseId, CourseType, Description, Price } = req.body;
 
     if (!CourseName || !Description) {
-      return res.status(400).json({ msg: "Course name and description are required" });
+      return res.status(400).json({ msg: "Course name and description required" });
     }
 
     const exists = await Course_tb.findOne({ CourseTitle: CourseName });
@@ -31,27 +29,13 @@ admin.post("/addCourse", async (req, res) => {
     });
 
     await course.save();
-    res.status(201).json({ msg: "Course added successfully" });
+    res.status(201).json({ msg: "Course added" });
 
   } catch (err) {
-    console.log(err);
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── UPDATE COURSE (PUT) ──────────────────────────────────────
-admin.put("/updatecourse/:id", async (req, res) => {
-  try {
-    const updated = await Course_tb.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ msg: "Course not found" });
-
-    res.json({ msg: "Course updated", updated });
-  } catch {
-    res.status(500).json({ msg: "Update failed" });
-  }
-});
-
-// ─── UPDATE COURSE (PATCH) ────────────────────────────────────
 admin.patch("/updatecourse/:id", async (req, res) => {
   try {
     const updated = await Course_tb.findByIdAndUpdate(
@@ -59,39 +43,28 @@ admin.patch("/updatecourse/:id", async (req, res) => {
       { $set: req.body },
       { new: true }
     );
+
     if (!updated) return res.status(404).json({ msg: "Course not found" });
 
-    res.json({ msg: "Course updated", updated });
+    res.json({ msg: "Updated", updated });
+
   } catch {
     res.status(500).json({ msg: "Update failed" });
   }
 });
 
-// ─── DELETE COURSE ────────────────────────────────────────────
 admin.delete("/deletecourse/:id", async (req, res) => {
   try {
     const deleted = await Course_tb.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ msg: "Course not found" });
 
-    res.json({ msg: "Course deleted successfully" });
+    res.json({ msg: "Deleted" });
+
   } catch {
     res.status(500).json({ msg: "Delete failed" });
   }
 });
 
-// ─── GET COURSE BY ID ─────────────────────────────────────────
-admin.get("/course/:id", async (req, res) => {
-  try {
-    const course = await Course_tb.findById(req.params.id);
-    if (!course) return res.status(404).json({ msg: "Course not found" });
-
-    res.json({ course });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
-});
-
-// ─── GET ALL COURSES ──────────────────────────────────────────
 admin.get("/courses", async (req, res) => {
   try {
     const courses = await Course_tb.find();
@@ -101,113 +74,130 @@ admin.get("/courses", async (req, res) => {
   }
 });
 
-// ─── GET ALL USERS OF A COURSE ────────────────────────────────
-admin.get("/course-users/:courseId", async (req, res) => {
+admin.get("/users", async (req, res) => {
   try {
-    const users = await User.find({ EnrolledCourses: req.params.courseId });
+    const users = await User.find().select("-Password");
     res.json({ users });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── ADD TASK ─────────────────────────────────────────────────
-admin.post("/add-task", async (req, res) => {
+admin.delete("/delete-user/:id", async (req, res) => {
   try {
-    const { TaskTitle, Description, DueDate, CourseId } = req.body;
+    const deleted = await User.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ msg: "User not found" });
 
-    if (!TaskTitle || !Description || !DueDate || !CourseId) {
-      return res.status(400).json({ msg: "All fields are required" });
-    }
+    res.json({ msg: "User deleted" });
 
-    const task = new Task({ TaskTitle, Description, DueDate, Course: CourseId });
-    await task.save();
-
-    res.status(201).json({ msg: "Task added successfully" });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── UPDATE TASK ──────────────────────────────────────────────
-admin.put("/update-task/:id", async (req, res) => {
+admin.get("/course-progress/:courseId", async (req, res) => {
   try {
-    const updated = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ msg: "Task not found" });
+    const users = await User.find({
+      EnrolledCourses: req.params.courseId
+    });
 
-    res.json({ msg: "Task updated", updated });
-  } catch {
-    res.status(500).json({ msg: "Update failed" });
+    const result = users.map(user => {
+      const progress = user.Progress.find(
+        p => p.courseId.toString() === req.params.courseId
+      );
+
+      return {
+        username: user.UserName,
+        completed: progress?.isCompleted || false,
+        completedAt: progress?.completedAt
+      };
+    });
+
+    res.json({ users: result });
+
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── DELETE TASK ──────────────────────────────────────────────
+admin.post("/add-task", async (req, res) => {
+  try {
+    const { TaskTitle, Description, DueDate, CourseId } = req.body;
+
+    const task = new Task({
+      TaskTitle,
+      Description,
+      DueDate,
+      Course: CourseId,
+    });
+
+    await task.save();
+    res.status(201).json({ msg: "Task added" });
+
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
 admin.delete("/delete-task/:id", async (req, res) => {
   try {
     const deleted = await Task.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ msg: "Task not found" });
 
-    res.json({ msg: "Task deleted successfully" });
+    res.json({ msg: "Task deleted" });
+
   } catch {
     res.status(500).json({ msg: "Delete failed" });
   }
 });
 
-// ─── GET ALL TASKS ────────────────────────────────────────────
 admin.get("/tasks", async (req, res) => {
   try {
     const tasks = await Task.find();
     res.json({ tasks });
   } catch (err) {
-    res.status(500).json({ msg: "Failed to fetch tasks", error: err.message });
-  }
-});
-
-// ─── MARK STUDENT AS PAID ─────────────────────────────────────
-admin.patch("/mark-paid/:userName", async (req, res) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { UserName: req.params.userName },
-      { IsPaid: true },
-      { new: true }
-    );
-    if (!user) return res.status(404).json({ msg: "User not found" });
-    res.json({ msg: `${req.params.userName} is now a paid member` });
-  } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── ADD STUDY MATERIAL ───────────────────────────────────────
 admin.post("/add-material", async (req, res) => {
   try {
     const { Title, Content, CourseId } = req.body;
-    if (!Title || !Content || !CourseId) {
-      return res.status(400).json({ msg: "All fields are required" });
-    }
-    const material = new Material({ Title, Content, Course: CourseId });
+
+    const material = new Material({
+      Title,
+      Content,
+      Course: CourseId,
+    });
+
     await material.save();
-    res.status(201).json({ msg: "Study material added successfully" });
+    res.status(201).json({ msg: "Material added" });
+
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── GET MATERIALS BY COURSE ──────────────────────────────────
 admin.get("/materials/:courseId", async (req, res) => {
   try {
-    const materials = await Material.find({ Course: req.params.courseId });
+    const materials = await Material.find({
+      Course: req.params.courseId,
+    });
+
     res.json(materials);
+
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// ─── DELETE MATERIAL ──────────────────────────────────────────
 admin.delete("/delete-material/:id", async (req, res) => {
   try {
-    await Material.findByIdAndDelete(req.params.id);
+    const deleted = await Material.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ msg: "Material not found" });
+
     res.json({ msg: "Material deleted" });
+
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
