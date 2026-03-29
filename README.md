@@ -280,11 +280,11 @@ docker-compose up --build --force-recreate
 
 ---
 
-## 📹 YouTube Demo
+## 📹 Video Demo
 
 <div align="center">
 
-[![Learnesta Demo](https://img.shields.io/badge/▶_Watch_Full_Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/your-video-link)
+>_[https://drive.google.com/file/d/18J4XvFnrU-5Hx5rVgM6sa3eixjtQqwkb/view?usp=drive_link]_
 
 </div>
 
