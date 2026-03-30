@@ -280,6 +280,9 @@ docker-compose up --build --force-recreate
 
 ---
 
+## Documentation pdf
+   >_[https://docs.google.com/document/d/1KHX8F7CMqm_z2KU64Tlr_aSeYe285wM7/edit?usp=drive_link&ouid=105405710184786777668&rtpof=true&sd=true]_
+
 ## 📹 Video Demo
 
 <div align="center">
