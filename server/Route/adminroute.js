@@ -202,5 +202,16 @@ admin.delete("/delete-material/:id", async (req, res) => {
     res.status(500).json({ msg: err.message });
   }
 });
+admin.get("/course-users/:courseId", async (req, res) => {
+  try {
+    const users = await User.find({
+      EnrolledCourses: req.params.courseId
+    }).select("-Password");
+
+    res.json({ users });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
 
 export default admin;

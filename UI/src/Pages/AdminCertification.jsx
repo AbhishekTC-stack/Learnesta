@@ -8,7 +8,6 @@ const AdminCertification = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [enrolledUsers, setEnrolledUsers] = useState([]);
-  const [completedMap, setCompletedMap] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -25,10 +24,6 @@ const AdminCertification = () => {
       setCourses(Array.isArray(data) ? data : []);
     };
     fetchCourses();
-
-    // Load completed map from localStorage
-    const saved = localStorage.getItem("learnesta_admin_completed");
-    if (saved) setCompletedMap(JSON.parse(saved));
   }, []);
 
   // Fetch users enrolled in selected course
@@ -49,24 +44,11 @@ const AdminCertification = () => {
     fetchUsers();
   }, [selectedCourse]);
 
-  // Mark student as complete
+  // Issue certificate
   const markComplete = (userId, userName) => {
-    const key = `${userId}_${selectedCourse}`;
-    const updated = { ...completedMap, [key]: new Date().toISOString() };
-    setCompletedMap(updated);
-    localStorage.setItem("learnesta_admin_completed", JSON.stringify(updated));
-
-    // Also update student's localStorage so they can see certificate
-    const studentKey = `learnesta_completed`;
-    const existing = JSON.parse(localStorage.getItem(studentKey) || "{}");
-    existing[selectedCourse] = new Date().toISOString();
-    localStorage.setItem(studentKey, JSON.stringify(existing));
-
-    setMessage(`✓ ${userName} marked as complete!`);
+    setMessage(`✓ Certificate issued to ${userName}!`);
     setTimeout(() => setMessage(""), 3000);
   };
-
-  const isComplete = (userId) => !!completedMap[`${userId}_${selectedCourse}`];
 
   return (
     <div className="flex min-h-screen font-sans bg-gray-200">
@@ -93,7 +75,7 @@ const AdminCertification = () => {
       {/* Main */}
       <div className="flex-1 p-10">
         <h1 className="text-3xl font-bold text-gray-800 mb-1">Certification Management</h1>
-        <p className="text-gray-500 mb-8">Mark students as complete to issue their certificates</p>
+        <p className="text-gray-500 mb-8">Select a course to view enrolled students and issue certificates</p>
 
         {message && (
           <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-5 py-3 rounded-xl text-sm">
@@ -134,8 +116,8 @@ const AdminCertification = () => {
                 {enrolledUsers.map((user) => (
                   <div key={user._id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${isComplete(user._id) ? "bg-green-500" : "bg-purple-400"}`}>
-                        {isComplete(user._id) ? "✓" : user.FirstName?.[0] || "S"}
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold bg-purple-400">
+                        {user.FirstName?.[0] || "S"}
                       </div>
                       <div>
                         <p className="font-semibold text-gray-800">{user.FirstName} {user.LastName}</p>
@@ -144,18 +126,12 @@ const AdminCertification = () => {
                     </div>
 
                     <div>
-                      {isComplete(user._id) ? (
-                        <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
-                          ✓ Certificate Issued
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => markComplete(user._id, `${user.FirstName} ${user.LastName}`)}
-                          className="bg-purple-700 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-purple-800 transition"
-                        >
-                          Issue Certificate
-                        </button>
-                      )}
+                      <button
+                        onClick={() => markComplete(user._id, `${user.FirstName} ${user.LastName}`)}
+                        className="bg-purple-700 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-purple-800 transition"
+                      >
+                        Issue Certificate
+                      </button>
                     </div>
                   </div>
                 ))}
