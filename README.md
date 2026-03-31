@@ -287,7 +287,7 @@ docker-compose up --build --force-recreate
 
 <div align="center">
 
->_[https://drive.google.com/file/d/18J4XvFnrU-5Hx5rVgM6sa3eixjtQqwkb/view?usp=drive_link]_
+>_[https://drive.google.com/file/d/1_Uk1OkO3K4-lCc1zObvNDHP7IHQD94Ch/view?usp=drive_link]_
 
 </div>
 
