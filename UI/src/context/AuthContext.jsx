@@ -6,7 +6,7 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
 
   const login = async (UserName, Password) => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/logout", { credentials: "include" });
+    await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, { credentials: "include" });
     setProfile(null);
   };
 
