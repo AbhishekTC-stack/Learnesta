@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import route from "./Route/userroute.js";
-import admin from "./Route/adminRoute.js";
+import admin from "./Route/adminroute.js";
 import { authentication } from "./middleware/auth.js";
 import adminCheck from "./middleware/admin.js";
 
