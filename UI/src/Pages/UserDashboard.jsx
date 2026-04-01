@@ -18,7 +18,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch("/api/class", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/class", { credentials: "include" });
         if (!res.ok) throw new Error("Failed");
         const data = await res.json();
         setEnrolledCourses(data.enrolledCourses || []);
@@ -35,7 +35,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchTrial = async () => {
       try {
-        const res = await fetch("/api/trial-status", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/trial-status", { credentials: "include" });
         const data = await res.json();
         setTrialStatus(data);
       } catch (err) {

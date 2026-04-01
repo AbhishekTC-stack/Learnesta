@@ -6,7 +6,7 @@ const Logout = () => {
     const navigate = useNavigate();
     const logout = async () =>{
         try{
-            const res = await fetch("/api/logout");
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/logout");
             if(res.ok) {
                 toast.success('Logout Success!')
                 navigate("/");

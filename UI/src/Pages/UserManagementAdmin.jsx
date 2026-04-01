@@ -7,7 +7,7 @@ function UserManagementAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("/api/admin/users", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users", {
         credentials: "include",
       });
       const data = await res.json();
@@ -25,7 +25,7 @@ function UserManagementAdmin() {
     if (!window.confirm("Delete this user?")) return;
 
     try {
-      const res = await fetch(`/api/admin/delete-user/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/delete-user/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

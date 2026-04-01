@@ -31,12 +31,12 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetch(`/api/enroll/${courseId}`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/enroll/${courseId}`, {
           method: "POST",
           credentials: "include",
         });
 
-        const matRes = await fetch(`/api/materials/${courseId}`, {
+        const matRes = await fetch(`${import.meta.env.VITE_API_URL}/api/materials/${courseId}`, {
           credentials: "include",
         });
 
@@ -47,7 +47,7 @@ const CourseDetail = () => {
           setMaterials([]);
         }
 
-        const taskRes = await fetch(`/api/tasks/${courseId}`, {
+        const taskRes = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks/${courseId}`, {
           credentials: "include",
         });
 
@@ -58,7 +58,7 @@ const CourseDetail = () => {
           setTasks([]);
         }
 
-        const courseRes = await fetch(`/api/getAllCourses`, {
+        const courseRes = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, {
           credentials: "include",
         });
 

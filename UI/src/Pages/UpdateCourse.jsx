@@ -25,7 +25,7 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch("/api/getAllCourses", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", { credentials: "include" });
         const data = await res.json();
         setCourses(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -60,7 +60,7 @@ const UpdateCourse = () => {
     }
 
     try {
-      const res = await fetch(`/api/admin/updatecourse/${selectedCourseId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/updatecourse/${selectedCourseId}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
