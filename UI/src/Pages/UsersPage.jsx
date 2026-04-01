@@ -7,7 +7,7 @@ const UsersPage = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
         credentials: "include",
       });
       const data = await res.json();

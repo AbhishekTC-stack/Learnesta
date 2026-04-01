@@ -25,7 +25,7 @@ const AddCoursePage = () => {
     setSuccess("");
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/addCourse", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/addCourse`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

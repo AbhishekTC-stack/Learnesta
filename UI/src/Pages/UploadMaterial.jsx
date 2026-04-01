@@ -22,7 +22,7 @@ const UploadMaterial = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, { credentials: "include" });
         const data = await res.json();
         setCourses(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -38,7 +38,7 @@ const UploadMaterial = () => {
     setSuccess("");
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/add-material", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/add-material`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

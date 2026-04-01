@@ -16,7 +16,7 @@ function CourseManagementAdmin() {
   // Fetch courses from backend
   const fetchCourses = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", { credentials: "include" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, { credentials: "include" });
       const data = await res.json();
       setCourses(Array.isArray(data) ? data : data.courses || []);
     } catch (err) {

@@ -19,7 +19,7 @@ const AdminCertification = () => {
   // Fetch all courses
   useEffect(() => {
     const fetchCourses = async () => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", { credentials: "include" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, { credentials: "include" });
       const data = await res.json();
       setCourses(Array.isArray(data) ? data : []);
     };

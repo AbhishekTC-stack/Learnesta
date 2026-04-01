@@ -15,7 +15,7 @@ const CertificationPage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/class", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/class`, { credentials: "include" });
         if (!res.ok) throw new Error("Failed to fetch enrolled courses");
         const data = await res.json();
         setEnrolledCourses(data.enrolledCourses || []);

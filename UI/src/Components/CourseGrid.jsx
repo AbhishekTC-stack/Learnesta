@@ -11,7 +11,7 @@ const CourseGrid = ({ isHome = false }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, {
           credentials: "include",
         });
 

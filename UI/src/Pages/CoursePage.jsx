@@ -111,7 +111,7 @@ function CoursePage() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/getAllCourses`, { credentials: "include" });
         const data = await res.json();
         setCourses(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -128,7 +128,7 @@ function CoursePage() {
 
     const fetchEnrolled = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/class", { credentials: "include" });
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/class`, { credentials: "include" });
         const data = await res.json();
         const ids = (data.enrolledCourses || []).map((c) => c._id);
         setEnrolledIds(ids);
